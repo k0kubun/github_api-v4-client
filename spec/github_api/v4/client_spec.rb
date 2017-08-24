@@ -1,5 +1,7 @@
 RSpec.describe GithubApi::V4::Client do
-  it 'has a version number' do
-    expect(GithubApi::V4::Client::VERSION).not_to be nil
+  it 'raises error for invalid credentials' do
+    expect {
+      GithubApi::V4::Client.new('invalid credential').schema
+    }.to raise_error(GithubApi::V4::Client::ClientError)
   end
 end
