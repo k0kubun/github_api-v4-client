@@ -1,8 +1,6 @@
 # GithubApi::V4::Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/github_api/v4/client`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A very thin GitHub GraphQL API v4 client
 
 ## Installation
 
@@ -12,27 +10,37 @@ Add this line to your application's Gemfile:
 gem 'github_api-v4-client'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install github_api-v4-client
-
 ## Usage
 
-TODO: Write usage instructions here
+```rb
+client = GithubApi::V4::Client.new("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
-## Development
+client.schema
+# {"data"=>
+#   {"__schema"=>
+#     {"types"=>
+#       [{"name"=>"Repository",
+#         "kind"=>"OBJECT",
+#         "description"=>"A repository contains the content for a project.",
+#         "fields"=>
+#          [{"name"=>"nameWithOwner"},
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+client.graphql(query: 'query { repository(owner: "k0kubun", name: "hamlit") { nameWithOwner } }')
+# {"data"=>{"repository"=>{"nameWithOwner"=>"k0kubun/hamlit"}}}
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+client.graphql(query: <<~QUERY, variables: { name: 'hamlit' })
+  query Repository($name: String!) {
+    repository(owner: "k0kubun", name: $name) {
+      nameWithOwner
+    }
+  }
+QUERY
+# {"data"=>{"repository"=>{"nameWithOwner"=>"k0kubun/hamlit"}}}
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/github_api-v4-client.
+Bug reports and pull requests are welcome on GitHub at https://github.com/k0kubun/github_api-v4-client.
 
 ## License
 
