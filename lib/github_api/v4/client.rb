@@ -29,16 +29,44 @@ class GithubApi::V4::Client
       query {
         __schema {
           types {
-            name
             kind
+            name
             description
-            fields {
+            fields(includeDeprecated: true) {
               name
+              description
+              args {
+                name
+                description
+                type {
+                  name
+                }
+                defaultValue
+              }
+              type {
+                name
+                description
+              }
+              isDeprecated
+              deprecationReason
+            }
+            inputFields {
+              name
+              description
+              type {
+                name
+              }
+              defaultValue
             }
           }
         }
       }
     GRAPHQL
+  end
+
+  # @return [Hash]
+  def query_schema
+    type('Query')
   end
 
   # @param [String] name
@@ -47,11 +75,34 @@ class GithubApi::V4::Client
     graphql(query: <<~GRAPHQL)
       query {
         __type(name: #{name.dump}) {
-          name
           kind
+          name
           description
-          fields {
+          fields(includeDeprecated: true) {
             name
+            description
+            args {
+              name
+              description
+              type {
+                name
+              }
+              defaultValue
+            }
+            type {
+              name
+              description
+            }
+            isDeprecated
+            deprecationReason
+          }
+          inputFields {
+            name
+            description
+            type {
+              name
+            }
+            defaultValue
           }
         }
       }

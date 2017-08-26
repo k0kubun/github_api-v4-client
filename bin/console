@@ -1,7 +1,13 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "github_api/v4/client"
+require 'bundler/setup'
+require 'github_api/v4/client'
+require 'pry'
 
-require "pry"
-Pry.start
+module Console
+  def self.start
+    client = GithubApi::V4::Client.new(ENV.fetch('GITHUB_TOKEN'))
+    binding.pry
+  end
+end
+Console.start
