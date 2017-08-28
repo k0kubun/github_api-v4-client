@@ -127,6 +127,17 @@ class GithubApi::V4::Client
     GRAPHQL
   end
 
+  def rate_limit
+    graphql(query: <<~GRAPHQL).dig('data', 'rateLimit')
+      query {
+        rateLimit {
+          remaining
+          limit
+        }
+      }
+    GRAPHQL
+  end
+
   private
 
   def handle_errors(resp)
