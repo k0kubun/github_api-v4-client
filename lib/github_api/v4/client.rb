@@ -92,6 +92,24 @@ class GithubApi::V4::Client
             type {
               name
               description
+              fields(includeDeprecated: true) {
+                name
+                description
+                args {
+                  name
+                  description
+                  type {
+                    name
+                  }
+                  defaultValue
+                }
+                type {
+                  name
+                  description
+                }
+                isDeprecated
+                deprecationReason
+              }
             }
             isDeprecated
             deprecationReason
